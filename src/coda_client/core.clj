@@ -24,7 +24,6 @@
                       {:status (:status response)
                        :body (:body response)})))))
 
-
 (defn create-doc [config data]
   (let [endpoint "/docs"
         response (make-api-request :post endpoint config data)]
@@ -34,3 +33,20 @@
                       {:status (:status response)
                        :body (:body response)})))))
 
+(defn delete-doc [config id]
+  (let [endpoint (str "/docs/" id)
+        response (make-api-request :delete endpoint config nil)]
+    (if (= (:status response) 202)
+      true
+      (throw (ex-info "Failed to delete doc"
+                      {:status (:status response)
+                       :body (:body response)})))))
+
+(defn get-doc [config id]
+  (let [endpoint (str "/docs/" id)
+        response (make-api-request :get endpoint config nil)]
+    (if (= (:status response) 200)
+      (json/parse-string (:body response) true)
+      (throw (ex-info "Failed to get doc"
+                      {:status (:status response)
+                       :body (:body response)})))))
