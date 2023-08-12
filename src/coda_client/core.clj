@@ -2,19 +2,16 @@
   (:require [clojure.core :as clojure]
             [clj-http.client :as http]
             [cheshire.core :as json]))
-            
 
 (defn make-api-request [method endpoint api-key data params]
   (let [api-url (str "https://coda.io/apis/v1" endpoint)
         body-data (if (nil? data)
                     nil
-                    (json/generate-string data)
-                    )]
+                    (json/generate-string data))]
     (http/request
      {:method method :url api-url :body body-data :query-params params :throw-exceptions false :headers
       {:Authorization (str "Bearer " api-key)
-       :content-type "application/json"}})
-    ))
+       :content-type "application/json"}})))
 
 ;; DOCS endpoints
 (defn list-docs [api-key params]
@@ -125,6 +122,78 @@
     (if (= (:status response) 200)
       (json/parse-string (:body response) true)
       (throw (ex-info (str "Failed to update acl settings"
+                           " Response: " (:body response))
+                      {:status (:status response)
+                       :body (:body response)})))))
+
+;; PUBLISHING endpoints
+(defn get-doc-categories [api-key]
+  (let [endpoint "/categories"
+        response (make-api-request :get endpoint api-key nil nil)]
+    (if (= (:status response) 200)
+      (json/parse-string (:body response) true)
+      (throw (ex-info (str "Failed to get acl doc categories."
+                           " Response: " (:body response))
+                      {:status (:status response)
+                       :body (:body response)})))))
+
+(defn publish-doc [api-key doc-id data]
+  (let [endpoint (str "/docs/" doc-id "/publish")
+        response (make-api-request :put endpoint api-key data nil)]
+    (if (= (:status response) 202)
+      (json/parse-string (:body response) true)
+      (throw (ex-info (str "Failed to publish a doc."
+                           " Response: " (:body response))
+                      {:status (:status response)
+                       :body (:body response)})))))
+
+(defn unpublish-doc [api-key doc-id]
+  (let [endpoint (str "/docs/" doc-id "/publish")
+        response (make-api-request :delete endpoint api-key nil nil)]
+    (if (= (:status response) 200)
+      true
+      (throw (ex-info (str "Failed to unpublish doc."
+                           " Response: " (:body response))
+                      {:status (:status response)
+                       :body (:body response)})))))
+
+;; PAGES endpoints
+(defn list-pages [api-key doc-id params]
+  (let [endpoint (str "/docs/" doc-id "/pages")
+        response (make-api-request :get endpoint api-key nil params)]
+    (if (= (:status response) 200)
+      (json/parse-string (:body response) true)
+      (throw (ex-info (str "Failed to list pages."
+                           " Response: " (:body response))
+                      {:status (:status response)
+                       :body (:body response)})))))
+
+(defn create-page [api-key doc-id data]
+  (let [endpoint (str "/docs/" doc-id "/pages")
+        response (make-api-request :post endpoint api-key data nil)]
+    (if (= (:status response) 202)
+      (json/parse-string (:body response) true)
+      (throw (ex-info (str "Failed to create page."
+                           " Response: " (:body response))
+                      {:status (:status response)
+                       :body (:body response)})))))
+
+(defn get-page [api-key doc-id page-id]
+  (let [endpoint (str "/docs/" doc-id "/pages/" page-id)
+        response (make-api-request :get endpoint api-key nil nil)]
+    (if (= (:status response) 200)
+      (json/parse-string (:body response) true)
+      (throw (ex-info (str "Failed to get page."
+                           " Response: " (:body response))
+                      {:status (:status response)
+                       :body (:body response)})))))
+
+(defn update-page [api-key doc-id page-id data]
+  (let [endpoint (str "/docs/" doc-id "/pages/" page-id)
+        response (make-api-request :put endpoint api-key data nil)]
+    (if (= (:status response) 202)
+      (json/parse-string (:body response) true)
+      (throw (ex-info (str "Failed to update a page."
                            " Response: " (:body response))
                       {:status (:status response)
                        :body (:body response)})))))
