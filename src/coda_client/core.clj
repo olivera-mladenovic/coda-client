@@ -197,3 +197,57 @@
                            " Response: " (:body response))
                       {:status (:status response)
                        :body (:body response)})))))
+
+;;AUTOMATION
+
+(defn trigger-automation [api-key doc-id rule-id data]
+  (let [endpoint (str "/docs/" doc-id "/hooks/automation/" rule-id)
+        response (make-api-request :post endpoint api-key data nil)]
+    (if (= (:status response) 202)
+      (json/parse-string (:body response) true)
+      (throw (ex-info (str "Failed to trigger automation."
+                           " Response: " (:body response))
+                      {:status (:status response)
+                       :body (:body response)})))))
+
+;; TABLES
+(defn list-tables [api-key doc-id params]
+  (let [endpoint (str "/docs/" doc-id "/tables")
+        response (make-api-request :get endpoint api-key nil params)]
+    (if (= (:status response) 200)
+      (json/parse-string (:body response) true)
+      (throw (ex-info (str "Failed to list tables."
+                           " Response: " (:body response))
+                      {:status (:status response)
+                       :body (:body response)})))))
+
+(defn get-table [api-key doc-id table-id params]
+  (let [endpoint (str "/docs/" doc-id "/tables/" table-id)
+        response (make-api-request :get endpoint api-key nil params)]
+    (if (= (:status response) 200)
+      (json/parse-string (:body response) true)
+      (throw (ex-info (str "Failed to get table."
+                           " Response: " (:body response))
+                      {:status (:status response)
+                       :body (:body response)})))))
+
+;; COLUMNS
+(defn list-columns [api-key doc-id table-id params]
+  (let [endpoint (str "/docs/" doc-id "/tables/" table-id "/columns")
+        response (make-api-request :get endpoint api-key nil params)]
+    (if (= (:status response) 200)
+      (json/parse-string (:body response) true)
+      (throw (ex-info (str "Failed to list columns"
+                           " Response: " (:body response))
+                      {:status (:status response)
+                       :body (:body response)})))))
+
+(defn get-column [api-key doc-id table-id column-id]
+  (let [endpoint (str "/docs/" doc-id "/tables/" table-id "/columns/" column-id)
+        response (make-api-request :get endpoint api-key nil nil)]
+    (if (= (:status response) 200)
+      (json/parse-string (:body response) true)
+      (throw (ex-info (str "Failed to get column."
+                           " Response: " (:body response))
+                      {:status (:status response)
+                       :body (:body response)})))))
