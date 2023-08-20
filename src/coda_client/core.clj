@@ -251,3 +251,74 @@
                            " Response: " (:body response))
                       {:status (:status response)
                        :body (:body response)})))))
+
+;; ROWS
+(defn list-rows [api-key doc-id table-id params]
+  (let [endpoint (str "/docs/" doc-id "/tables/" table-id "/rows")
+        response (make-api-request :get endpoint api-key nil params)]
+    (if (= (:status response) 200)
+      (json/parse-string (:body response) true)
+      (throw (ex-info (str "Failed to list rows."
+                           " Response: " (:body response))
+                      {:status (:status response)
+                       :body (:body response)})))))
+
+(defn insert-rows [api-key doc-id table-id data params]
+  (let [endpoint (str "/docs/" doc-id "/tables/" table-id "/rows")
+        response (make-api-request :post endpoint api-key data params)]
+    (if (= (:status response) 202)
+      (json/parse-string (:body response) true)
+      (throw (ex-info (str "Failed to create rows."
+                           " Response: " (:body response))
+                      {:status (:status response)
+                       :body (:body response)})))))
+
+(defn delete-rows [api-key doc-id table-id data]
+  (let [endpoint (str "/docs/" doc-id "/tables/" table-id "/rows")
+        response (make-api-request :delete endpoint api-key data nil)]
+    (if (= (:status response) 202)
+      true
+      (throw (ex-info (str "Failed to delete rows."
+                           " Response: " (:body response))
+                      {:status (:status response)
+                       :body (:body response)})))))
+
+(defn get-row [api-key doc-id table-id row-id params]
+  (let [endpoint (str "/docs/" doc-id "/tables/" table-id "/rows/" row-id)
+        response (make-api-request :get endpoint api-key nil params)]
+    (if (= (:status response) 200)
+      (json/parse-string (:body response) true)
+      (throw (ex-info (str "Failed to get a row."
+                           " Response: " (:body response))
+                      {:status (:status response)
+                       :body (:body response)})))))
+
+(defn update-row [api-key doc-id table-id row-id data params]
+  (let [endpoint (str "/docs/" doc-id "/tables/" table-id "/rows/" row-id)
+        response (make-api-request :put endpoint api-key data params)]
+    (if (= (:status response) 202)
+      (json/parse-string (:body response) true)
+      (throw (ex-info (str "Failed to update a row."
+                           " Response: " (:body response))
+                      {:status (:status response)
+                       :body (:body response)})))))
+
+(defn delete-row [api-key doc-id table-id row-id]
+  (let [endpoint (str "/docs/" doc-id "/tables/" table-id "/rows/" row-id)
+        response (make-api-request :delete endpoint api-key nil nil)]
+    (if (= (:status response) 202)
+      true
+      (throw (ex-info (str "Failed to delete row."
+                           " Response: " (:body response))
+                      {:status (:status response)
+                       :body (:body response)})))))
+
+(defn push-button [api-key doc-id table-id row-id column-id]
+  (let [endpoint (str "/docs/" doc-id "/tables/" table-id "/rows/" row-id "/buttons/" column-id)
+        response (make-api-request :post endpoint api-key nil nil)]
+    (if (= (:status response) 202)
+      (json/parse-string (:body response) true)
+      (throw (ex-info (str "Failed to push button."
+                           " Response: " (:body response))
+                      {:status (:status response)
+                       :body (:body response)})))))
