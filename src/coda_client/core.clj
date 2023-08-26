@@ -199,7 +199,6 @@
                        :body (:body response)})))))
 
 ;;AUTOMATION
-
 (defn trigger-automation [api-key doc-id rule-id data]
   (let [endpoint (str "/docs/" doc-id "/hooks/automation/" rule-id)
         response (make-api-request :post endpoint api-key data nil)]
@@ -319,6 +318,161 @@
     (if (= (:status response) 202)
       (json/parse-string (:body response) true)
       (throw (ex-info (str "Failed to push button."
+                           " Response: " (:body response))
+                      {:status (:status response)
+                       :body (:body response)})))))
+
+;;FORMULAS
+(defn list-formulas [api-key doc-id params]
+  (let [endpoint (str "/docs/" doc-id "/formulas")
+        response (make-api-request :get endpoint api-key nil params)]
+    (if (= (:status response) 200)
+      (json/parse-string (:body response) true)
+      (throw (ex-info (str "Failed to list formulas."
+                           " Response: " (:body response))
+                      {:status (:status response)
+                       :body (:body response)})))))
+
+(defn get-formula [api-key doc-id formula-id params]
+  (let [endpoint (str "/docs/" doc-id "/formulas/" formula-id)
+        response (make-api-request :get endpoint api-key nil params)]
+    (if (= (:status response) 200)
+      (json/parse-string (:body response) true)
+      (throw (ex-info (str "Failed to get formula."
+                           " Response: " (:body response))
+                      {:status (:status response)
+                       :body (:body response)})))))
+
+;;CONTROLS
+(defn list-controls [api-key doc-id params]
+  (let [endpoint (str "/docs/" doc-id "/controls")
+        response (make-api-request :get endpoint api-key nil params)]
+    (if (= (:status response) 200)
+      (json/parse-string (:body response) true)
+      (throw (ex-info (str "Failed to list controls."
+                           " Response: " (:body response))
+                      {:status (:status response)
+                       :body (:body response)})))))
+
+(defn get-control [api-key doc-id control-id params]
+  (let [endpoint (str "/docs/" doc-id "/controls/" control-id)
+        response (make-api-request :get endpoint api-key nil params)]
+    (if (= (:status response) 200)
+      (json/parse-string (:body response) true)
+      (throw (ex-info (str "Failed to get control."
+                           " Response: " (:body response))
+                      {:status (:status response)
+                       :body (:body response)})))))
+
+;;ACCOUNT
+(defn get-user-info [api-key]
+  (let [endpoint "/whoami"
+        response (make-api-request :get endpoint api-key nil nil)]
+    (if (= (:status response) 200)
+      (json/parse-string (:body response) true)
+      (throw (ex-info (str "Failed to get user info."
+                           " Response: " (:body response))
+                      {:status (:status response)
+                       :body (:body response)})))))
+
+;;ANALYTICS
+(defn list-doc-analytics [api-key params]
+  (let [endpoint "/analytics/docs"
+        response (make-api-request :get endpoint api-key nil params)]
+    (if (= (:status response) 200)
+      (json/parse-string (:body response) true)
+      (throw (ex-info (str "Failed to list doc analytics."
+                           " Response: " (:body response))
+                      {:status (:status response)
+                       :body (:body response)})))))
+
+(defn list-page-analytics [api-key doc-id params]
+  (let [endpoint (str "/analytics/docs/" doc-id "/pages")
+        response (make-api-request :get endpoint api-key nil params)]
+    (if (= (:status response) 200)
+      (json/parse-string (:body response) true)
+      (throw (ex-info (str "Failed to list page analytics."
+                           " Response: " (:body response))
+                      {:status (:status response)
+                       :body (:body response)})))))
+
+(defn get-analytics-summary [api-key params]
+  (let [endpoint "/analytics/docs/summary"
+        response (make-api-request :get endpoint api-key nil params)]
+    (if (= (:status response) 200)
+      (json/parse-string (:body response) true)
+      (throw (ex-info (str "Failed to get summarized analytics."
+                           " Response: " (:body response))
+                      {:status (:status response)
+                       :body (:body response)})))))
+
+(defn list-pack-analytics [api-key params]
+  (let [endpoint "/analytics/packs"
+        response (make-api-request :get endpoint api-key nil params)]
+    (if (= (:status response) 200)
+      (json/parse-string (:body response) true)
+      (throw (ex-info (str "Failed to list analytics for packs."
+                           " Response: " (:body response))
+                      {:status (:status response)
+                       :body (:body response)})))))
+
+(defn list-pack-analytics [api-key params]
+  (let [endpoint "/analytics/packs"
+        response (make-api-request :get endpoint api-key nil params)]
+    (if (= (:status response) 200)
+      (json/parse-string (:body response) true)
+      (throw (ex-info (str "Failed to list analytics for packs."
+                           " Response: " (:body response))
+                      {:status (:status response)
+                       :body (:body response)})))))
+
+(defn get-pack-analytics-summary [api-key params]
+  (let [endpoint "/analytics/packs/summary"
+        response (make-api-request :get endpoint api-key nil params)]
+    (if (= (:status response) 200)
+      (json/parse-string (:body response) true)
+      (throw (ex-info (str "Failed to get summarized analytics for packs."
+                           " Response: " (:body response))
+                      {:status (:status response)
+                       :body (:body response)})))))
+
+(defn get-pack-formulas-analytics [api-key pack-id params]
+  (let [endpoint (str "/analytics/packs/" pack-id "/formulas")
+        response (make-api-request :get endpoint api-key nil params)]
+    (if (= (:status response) 200)
+      (json/parse-string (:body response) true)
+      (throw (ex-info (str "Failed to get analytics for pack formulas."
+                           " Response: " (:body response))
+                      {:status (:status response)
+                       :body (:body response)})))))
+
+(defn get-analytics-last-updated [api-key]
+  (let [endpoint "/analytics/updated"
+        response (make-api-request :get endpoint api-key nil nil)]
+    (if (= (:status response) 200)
+      (json/parse-string (:body response) true)
+      (throw (ex-info (str "Failed to get days when analytics were last updated."
+                           " Response: " (:body response))
+                      {:status (:status response)
+                       :body (:body response)})))))
+
+;;MISCELLANEOUS
+(defn resolve-browser-link [api-key params]
+  (let [endpoint "/resolveBrowserLink"
+        response (make-api-request :get endpoint api-key nil params)]
+    (if (= (:status response) 200)
+      (json/parse-string (:body response) true)
+      (throw (ex-info (str "Failed to resolve browser link."
+                           " Response: " (:body response))
+                      {:status (:status response)
+                       :body (:body response)})))))
+
+(defn get-mutation-status [api-key request-id]
+  (let [endpoint (str "/mutationStatus/" request-id)
+        response (make-api-request :get endpoint api-key nil nil)]
+    (if (= (:status response) 200)
+      (json/parse-string (:body response) true)
+      (throw (ex-info (str "Failed to get mutation status."
                            " Response: " (:body response))
                       {:status (:status response)
                        :body (:body response)})))))
