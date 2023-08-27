@@ -6,6 +6,7 @@
   :dependencies [[org.clojure/clojure "1.11.1"]
                  [clj-http "3.12.0"]
                  [cheshire "5.11.0"]
+                 [environ "0.5.0"]
                  ]
   :repl-options {:init-ns coda-client.core})
 
