@@ -79,7 +79,7 @@
   (let [endpoint (str "/docs/" doc-id "/acl/permissions")
         response (make-api-request :post endpoint api-key data nil)]
     (if (= (:status response) 200)
-      (json/parse-string (:body response) true)
+      true
       (throw (ex-info (str "Failed to add permission."
                            " Response: " (:body response))
                       {:status (:status response)
