@@ -9,7 +9,7 @@
                  [environ "0.5.0"]
                  ]
   :repositories {"clojars" "https://clojars.org/repo"}
-  :group "zener.zeppelin"
+  :group "net.clojars.zenerzeppelin group"
   :artifact "coda-library"
   :repl-options {:init-ns coda-client.core})
 
