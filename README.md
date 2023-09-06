@@ -1,6 +1,6 @@
 # coda-client
 
-A Clojure library designed to programmatically interact with Coda docs:
+A Clojure library designed to programmatically interact with Coda docs.
 
 ## Instalation
 Instalation info found on [clojars](https://clojars.org/net.clojars.zenerzeppelin/coda-client/versions/0.1.0-SNAPSHOT):
