@@ -1,4 +1,4 @@
-(defproject coda-client "0.1.0-SNAPSHOT"
+(defproject net.clojars.zenerzeppelin/coda-client "0.1.0-SNAPSHOT"
   :description "Library for interacting with Coda docs"
   :url "https://github.com/olivera-mladenovic/coda-client"
   :license {:name "MIT License"
@@ -9,7 +9,7 @@
                  [environ "0.5.0"]
                  ]
   :repositories {"clojars" "https://clojars.org/repo"}
-  :group "net.clojars.zenerzeppelin group"
-  :artifact "coda-library"
+  :group "net.clojars.zenerzeppelin"
+  :artifact "coda-client"
   :repl-options {:init-ns coda-client.core})
 

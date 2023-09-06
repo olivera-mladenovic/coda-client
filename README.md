@@ -2,6 +2,11 @@
 
 A Clojure library designed to programmatically interact with Coda docs:
 
+## Instalation
+Instalation info found on [clojars](https://clojars.org/net.clojars.zenerzeppelin/coda-client/versions/0.1.0-SNAPSHOT):
+
+The latest version:
+[![Clojars Project](https://img.shields.io/clojars/v/net.clojars.zenerzeppelin/coda-client.svg)](https://clojars.org/net.clojars.zenerzeppelin/coda-client)
 ## Usage
 
 This library uses the same method names as found in [Coda docs](https://coda.io/developers/apis/v1). It has all features supported by Coda's REST API:
