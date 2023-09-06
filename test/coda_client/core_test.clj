@@ -47,3 +47,38 @@
   (testing "Updating acl settings for doc"
     (is (= acl-settings (update-acl-settings key test-doc-id acl-settings)))))
 
+;; TESTING PUBLISHING ENDPOINTS
+(deftest test-get-doc-categories
+  (testing "Getting doc categories"
+    (is (not (= nil (:items (get-doc-categories key)))))))
+
+;; TESTING ANALYTICS ENDPOINTS
+(deftest test-get-doc-analytics
+  (testing "Getting doc analytics"
+    (is (not (= nil (:items (list-doc-analytics key nil)))))))
+
+(deftest test-get-analytics-summary
+  (testing "Getting summaried analytics"
+    (is (not (= nil (:totalSessions (get-analytics-summary key nil)))))))
+
+(deftest test-get-pack-analytics
+  (testing "Getting analytics for packs"
+    (is (not (= nil (:items (list-pack-analytics key nil)))))))
+
+(deftest test-get-pack-analytics-summary
+  (testing "Getting summaried analytics for packs"
+    (is (not (= nil (:totalInvocations (get-pack-analytics-summary key nil)))))))
+
+(deftest test-get-analytics-last-updated
+  (testing "Getting days when analytics were last updated"
+    (is (not (= nil (:docAnalyticsLastUpdated (get-analytics-last-updated key)))))))
+
+;; TESTING USER INFO
+(deftest test-get-user-info
+  (testing "Getting info for current user"
+    (is (not (= nil (:loginId (get-user-info key)))))))
+
+(deftest test-get-user-info-wrong-key
+  (testing "Getting info for current user with wrong-key"
+    (is (thrown? clojure.lang.ExceptionInfo
+                 (get-user-info wrong-key)))))

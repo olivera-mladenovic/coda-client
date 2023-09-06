@@ -416,16 +416,6 @@
                       {:status (:status response)
                        :body (:body response)})))))
 
-(defn list-pack-analytics [api-key params]
-  (let [endpoint "/analytics/packs"
-        response (make-api-request :get endpoint api-key nil params)]
-    (if (= (:status response) 200)
-      (json/parse-string (:body response) true)
-      (throw (ex-info (str "Failed to list analytics for packs."
-                           " Response: " (:body response))
-                      {:status (:status response)
-                       :body (:body response)})))))
-
 (defn get-pack-analytics-summary [api-key params]
   (let [endpoint "/analytics/packs/summary"
         response (make-api-request :get endpoint api-key nil params)]
