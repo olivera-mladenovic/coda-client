@@ -1,22 +1,73 @@
 # coda-client
 
-A Clojure library designed to ... well, that part is up to you.
+A Clojure library designed to programmatically interact with Coda docs:
 
 ## Usage
 
-FIXME
+This library uses the same method names as found in [Coda docs](https://coda.io/developers/apis/v1). It has all features supported by Coda's REST API:
+* **DOCS** endpoints (listing docs, creating doc, get info about specific doc, delete doc)
+* **PERMISSIONS** endpoints (listing, deleting and adding persmission, get sharing metadata, search principals, get or update ACL settings)
+* **PUBLISHING** endpoints (get doc categories, publish or unpublish doc)
+* **PAGES** endpoints (list pages, create, update or get a page)
+* **AUTOMATIONS** (trigger automation)
+* **TABLES** (list or get a table)
+* **COLUMNS** (list or get a column)
+* **ROWS** (list table rows, insert or upsert roes, delete multiple rows, get, update or delete a row, push a button on a row in table)
+* **FORMULAS** (list or get a formula)
+* **CONTROLS** (List or get a control)
+* **ACCOUNT** (get user info)
+* **ANALYTICS** (list doc or page analytics, get doc analytics summary, get unalytics last updated day...)
+* **MISCELLANEOUS** (resolve browser link or get mutation status)
 
-## License
+## Token
 
-Copyright © 2023 FIXME
+You need to generate token in your Coda profile settings. Do not share token with anyone and do not use it on client side!
 
-This program and the accompanying materials are made available under the
-terms of the Eclipse Public License 2.0 which is available at
-http://www.eclipse.org/legal/epl-2.0.
+## Consistency
 
-This Source Code may also be made available under the following Secondary
-Licenses when the conditions for such availability set forth in the Eclipse
-Public License, v. 2.0 are satisfied: GNU General Public License as published by
-the Free Software Foundation, either version 2 of the License, or (at your
-option) any later version, with the GNU Classpath Exception which is available
-at https://www.gnu.org/software/classpath/license.html.
+Changes made in Coda are real-time, but it can take a few seconds for them to become available via the API. **SO IF YOU EXPERIENCE HAVING NOT UP-TO-DATE DATA, IT IS NOT A BUG WITHIN LIBRARY.** Similarly, changes made via API are not immediate. There endpoints return HTTP 202 status code, indicating that the edit has been accepted and queued for processing.
+
+## Usage
+
+Library uses kebab-case naming convention.
+~~~
+    (ns coda-client.core
+        (:require [coda-client.core :as coda]))
+        
+    (def api-key "your-secret-key") ;;prefer reading it from env to keep it secret
+    
+    (get-user-info api-key)
+    ;;expect your response to look like this
+    {:name "Your name",
+    :loginId "your id or email",
+    :type "user",
+    :href "link to your profile",
+    :tokenName "name used when generating token",
+    :scoped boolean
+    :pictureLink "link to your avatar",
+    :workspace {
+        :id "id of workspace",
+        :type "workspace",
+        :browserLink "link to your browser"
+        :name "workspace name"
+      }
+    }
+~~~
+All the functions are called with arguments in this order:
+1. api-key
+2. body-data
+3. parameters
+
+For functions that support parameters, you must send `nil` if you want to skip them and get all the data.
+Example:
+~~~
+;;list all docs
+(list-docs api-key nil)
+
+;;limit to only one doc
+(list-docs api-key {:limit 1})
+~~~
+ 
+ ## Error Handling
+ 
+ Every function handles error on its own. Which means that every function will throw [ex-info](https://clojuredocs.org/clojure.core/ex-info) with a detailed explanation from the response (the status code and body from the response)
