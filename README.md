@@ -36,13 +36,15 @@ Changes made in Coda are real-time, but it can take a few seconds for them to be
 
 Library uses kebab-case naming convention.
 ~~~
-    (ns coda-client.core
+    (ns example.core
         (:require [coda-client.core :as coda]))
         
     (def api-key "your-secret-key") ;;prefer reading it from env to keep it secret
     
-    (get-user-info api-key)
+    (coda/get-user-info api-key)
+
     ;;expect your response to look like this
+
     {:name "Your name",
     :loginId "your id or email",
     :type "user",
@@ -67,10 +69,10 @@ For functions that support parameters, you must send `nil` if you want to skip t
 Example:
 ~~~
 ;;list all docs
-(list-docs api-key nil)
+(coda/list-docs api-key nil)
 
 ;;limit to only one doc
-(list-docs api-key {:limit 1})
+(coda/list-docs api-key {:limit 1})
 ~~~
  
  ## Error Handling
