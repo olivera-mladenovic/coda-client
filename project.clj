@@ -1,12 +1,15 @@
 (defproject coda-client "0.1.0-SNAPSHOT"
-  :description "FIXME: write description"
-  :url "http://example.com/FIXME"
-  :license {:name "EPL-2.0 OR GPL-2.0-or-later WITH Classpath-exception-2.0"
-            :url "https://www.eclipse.org/legal/epl-2.0/"}
+  :description "Library for interacting with Coda docs"
+  :url "https://github.com/olivera-mladenovic/coda-client"
+  :license {:name "MIT License"
+            :url "https://github.com/olivera-mladenovic/coda-client/blob/master/LICENSE"}
   :dependencies [[org.clojure/clojure "1.11.1"]
                  [clj-http "3.12.0"]
                  [cheshire "5.11.0"]
                  [environ "0.5.0"]
                  ]
+  :repositories {"clojars" "https://clojars.org/repo"}
+  :group "zener.zeppelin"
+  :artifact "coda-library"
   :repl-options {:init-ns coda-client.core})
 
